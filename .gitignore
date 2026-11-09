@@ -1,0 +1,17 @@
+# secrets and per-machine state: never commit
+.env
+*.token
+browser_profile*/
+RUN/
+# runtime output
+recordings/
+logs/
+qa/
+voice_samples/
+assets/clips/src/
+# python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/

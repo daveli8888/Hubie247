@@ -1,0 +1,70 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Placeholder dice (local stand-in)</title>
+<style>
+  :root { --navy:#0b1b2e; --panel:#12263f; --teal:#19d3c5; --gold:#f5c442; --red:#e04a5a; --txt:#e8f1f5; --dim:#7f97ad; }
+  * { box-sizing:border-box; margin:0; }
+  body { width:1280px; height:720px; overflow:hidden; background:var(--navy); color:var(--txt);
+         font-family: Ubuntu, "DejaVu Sans", sans-serif; }
+  .ph { position:absolute; top:0; left:0; right:0; height:56px; background:#3a1d0b; color:#ffd9a8;
+        display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:700; letter-spacing:.5px; }
+  .wrap { position:absolute; top:76px; left:60px; right:60px; bottom:30px; display:grid;
+          grid-template-columns: 330px 1fr; gap:28px; }
+  .side { background:var(--panel); border-radius:16px; padding:26px; display:flex; flex-direction:column; gap:18px; }
+  .lab { color:var(--dim); font-size:17px; }
+  .val { font-size:30px; font-weight:700; }
+  .demo { display:inline-block; background:var(--teal); color:#062; color:#05211f; font-weight:800; padding:4px 10px;
+          border-radius:8px; font-size:16px; }
+  .main { background:var(--panel); border-radius:16px; position:relative; display:flex; flex-direction:column;
+          align-items:center; justify-content:center; gap:30px; }
+  #num { font-size:150px; font-weight:800; font-variant-numeric: tabular-nums; transition: color .2s; }
+  #num.win { color:var(--teal); } #num.loss { color:var(--red); }
+  .bar { width:80%; height:22px; border-radius:11px; background:var(--red); position:relative; }
+  .bar .ok { position:absolute; top:0; bottom:0; right:0; border-radius:0 11px 11px 0; background:var(--teal); }
+  .bar .mark { position:absolute; top:-12px; width:6px; height:46px; background:#fff; border-radius:3px; transition:left .6s; }
+  #msg { font-size:30px; font-weight:700; min-height:40px; }
+  .hist { display:flex; gap:8px; flex-wrap:wrap; }
+  .hist span { padding:4px 9px; border-radius:7px; font-size:16px; font-weight:700; }
+  .w { background:#0f4b47; color:var(--teal); } .l { background:#4a1820; color:#ff8b98; }
+</style></head>
+<body>
+<div class="ph">PLACEHOLDER GAME · local stand-in (housebets.com shows a Cloudflare check to this server)</div>
+<div class="wrap">
+  <div class="side">
+    <div><span class="demo">DEMO · FUN CREDITS</span></div>
+    <div><div class="lab">Fun balance (not money)</div><div class="val" id="bal">1,000.00</div></div>
+    <div><div class="lab">Bet</div><div class="val">0.00 <span class="lab">(demo)</span></div></div>
+    <div><div class="lab">Roll over</div><div class="val" id="tgt">50.50</div></div>
+    <div><div class="lab">Payout</div><div class="val" id="mult">2.00x</div></div>
+    <div><div class="lab">Last rolls</div><div class="hist" id="hist"></div></div>
+  </div>
+  <div class="main">
+    <div id="num">--.--</div>
+    <div class="bar"><div class="ok" id="ok"></div><div class="mark" id="mark" style="left:50%"></div></div>
+    <div id="msg">Hubie is warming up…</div>
+  </div>
+</div>
+<script>
+let bal = 1000, target = 50.5, rounds = 0;
+const $ = id => document.getElementById(id);
+function fmt(n){ return n.toLocaleString('en-US',{minimumFractionDigits:2, maximumFractionDigits:2}); }
+function setTarget(t){ target = t; $('tgt').textContent = t.toFixed(2);
+  const mult = 99 / (100 - t); $('mult').textContent = mult.toFixed(2)+'x';
+  $('ok').style.width = (100 - t) + '%'; return mult; }
+setTarget(50.5);
+window.roll = async function(){
+  // vary the target a little so commentary has something to talk about
+  const choices = [50.5, 50.5, 66, 75, 90, 25];
+  const mult = setTarget(choices[Math.floor(Math.random()*choices.length)]);
+  $('num').className = ''; $('msg').textContent = 'rolling…';
+  for (let i = 0; i < 14; i++) { $('num').textContent = (Math.random()*100).toFixed(2); await new Promise(r => setTimeout(r, 70)); }
+  const v = Math.random()*100, win = v > target;
+  $('num').textContent = v.toFixed(2); $('num').className = win ? 'win' : 'loss';
+  $('mark').style.left = v + '%';
+  $('msg').textContent = win ? `Win · ${mult.toFixed(2)}x (fun credits)` : 'No luck this time';
+  const s = document.createElement('span'); s.className = win ? 'w' : 'l'; s.textContent = v.toFixed(2);
+  $('hist').prepend(s); while ($('hist').children.length > 10) $('hist').lastChild.remove();
+  rounds++;
+  return { game: 'dice', roll: +v.toFixed(2), target, multiplier: +mult.toFixed(2), win, round: rounds };
+};
+</script>
+</body></html>

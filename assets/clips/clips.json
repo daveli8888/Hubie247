@@ -1,0 +1,74 @@
+{
+ "idle": {
+  "file": "assets/clips/hubie_idle.mp4",
+  "wraps": false,
+  "calm": 0.85,
+  "jump_cost": 3.0,
+  "p_reverse": 0.35,
+  "p_jump": 0.12,
+  "min_segment": 1.4,
+  "note": "Gemini idle v2 (10 s), camera push-in removed (tools/build_clips.py); played as a random walk: forward/back between calm frames + low-difference jumps, so it never repeats as a 10 s loop"
+ },
+ "talk": {
+  "file": "assets/clips/hubie_talk.mp4",
+  "wraps": true,
+  "calm": 0.85,
+  "jump_cost": 3.0,
+  "p_reverse": 0.25,
+  "p_jump": 0.12,
+  "min_segment": 1.4,
+  "note": "Gemini talk clip 3 (seamless 9 s loop) in the same framing; shown only while his voice sounds, mouth re-chosen from the voice level (anim.json)"
+ },
+ "talk2": {
+  "file": "assets/clips/hubie_talk2.mp4",
+  "role": "talk",
+  "wraps": true,
+  "calm": 0.85,
+  "jump_cost": 3.0,
+  "p_reverse": 0.25,
+  "p_jump": 0.12,
+  "min_segment": 1.4,
+  "note": "owner's clip 2026-11-09 (talking with paw gestures), same framing; first/last frame nearly match, so it loops; a line picks talk or talk2"
+ },
+ "win": {
+  "file": "assets/clips/hubie_win.mp4",
+  "end": 200,
+  "match_first": 0.5,
+  "xfade_in": 0.35,
+  "xfade_out": 0.5,
+  "note": "Gemini coin-shower win, same framing; plays to the calm frame before the hat tip (8.3 s); the rarer variety win",
+  "role": "win",
+  "weight": 0.35
+ },
+ "win2": {
+  "file": "assets/clips/hubie_win2.mp4",
+  "role": "win",
+  "weight": 0.65,
+  "end": 168,
+  "match_first": 0.4,
+  "xfade_in": 0.35,
+  "xfade_out": 0.5,
+  "note": "owner's clip 2026-11-09: paws up, hat adjust, settles back (camera push-in removed); the main win (7 s)"
+ },
+ "loss": {
+  "from": "idle",
+  "frames": [
+   122,
+   150
+  ],
+  "speed": 0.45,
+  "tilt_deg": 2.5,
+  "sink": 0.012,
+  "xfade_in": 0.4,
+  "xfade_out": 0.45,
+  "note": "built from idle frames: eyes-closed 'oh well', slowed, small head tilt + sigh (~2.6 s); gives way when his line starts"
+ },
+ "alive": {
+  "on": true,
+  "breath": 0.009,
+  "breath_period": 4.2,
+  "flicker": 1.0,
+  "motes": 6,
+  "note": "breathing <=0.9% on his body column, warm lamp swell, a few dust motes"
+ }
+}
